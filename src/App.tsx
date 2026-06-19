@@ -9,6 +9,11 @@ import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsAndConditions from './pages/TermsAndConditions'
 import Login from './pages/Login'
 import Send from './pages/Send'
+import Careers from './pages/Careers'
+import Locations from './pages/Locations'
+import Blog from './pages/Blog'
+import Pricing from './pages/Pricing'
+import ProhibitedItems from './pages/ProhibitedItems'
 import DashboardLayout from './pages/dashboard/DashboardLayout'
 import Overview from './pages/dashboard/Overview'
 
@@ -95,6 +100,51 @@ export default function App() {
           element={
             <PublicLayout>
               <Send />
+            </PublicLayout>
+          }
+        />
+
+        <Route
+          path="/careers"
+          element={
+            <PublicLayout>
+              <Careers />
+            </PublicLayout>
+          }
+        />
+
+        <Route
+          path="/locations"
+          element={
+            <PublicLayout>
+              <Locations />
+            </PublicLayout>
+          }
+        />
+
+        <Route
+          path="/blog"
+          element={
+            <PublicLayout>
+              <Blog />
+            </PublicLayout>
+          }
+        />
+
+        <Route
+          path="/pricing"
+          element={
+            <PublicLayout>
+              <Pricing />
+            </PublicLayout>
+          }
+        />
+
+        <Route
+          path="/prohibited-items"
+          element={
+            <PublicLayout>
+              <ProhibitedItems />
             </PublicLayout>
           }
         />
