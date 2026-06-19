@@ -1,128 +1,39 @@
-import React, { useState } from 'react'
+import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Zap, Calendar, Truck, Package, Globe, ChevronDown, MapPin } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import heroImg from '../assets/hero.png'
-
-// ---------------------------------------------------------------------------
-// Inline SVG icons for the Services section
-// ---------------------------------------------------------------------------
-
-function IconClock() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <polyline points="12 6 12 12 16 14" />
-    </svg>
-  )
-}
-
-function IconCalendar() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-      <line x1="16" y1="2" x2="16" y2="6" />
-      <line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" />
-    </svg>
-  )
-}
-
-function IconTruck() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="1" y="3" width="15" height="13" rx="1" />
-      <path d="M16 8h4l3 5v3h-7V8Z" />
-      <circle cx="5.5" cy="18.5" r="2.5" />
-      <circle cx="18.5" cy="18.5" r="2.5" />
-    </svg>
-  )
-}
-
-function IconBoxes() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
-      <line x1="3.27" y1="6.96" x2="12" y2="12.01" />
-      <line x1="12" y1="22.08" x2="12" y2="12" />
-      <line x1="20.73" y1="6.96" x2="12" y2="12.01" />
-    </svg>
-  )
-}
-
-function IconGlobe() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" />
-      <line x1="2" y1="12" x2="22" y2="12" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z" />
-    </svg>
-  )
-}
 
 // ---------------------------------------------------------------------------
 // Data
 // ---------------------------------------------------------------------------
 
-const SERVICES = [
-  {
-    id: 'same-day',
-    icon: <IconClock />,
-    name: 'Same-Day Delivery',
-    description: 'Delivered within hours. Perfect for urgent documents and gifts within the city.',
-    comingSoon: false,
-  },
-  {
-    id: 'next-day',
-    icon: <IconCalendar />,
-    name: 'Next-Day Delivery',
-    description: 'Book today, arrive tomorrow. Reliable for non-urgent inter-city packages.',
-    comingSoon: false,
-  },
-  {
-    id: 'interstate',
-    icon: <IconTruck />,
-    name: 'Interstate Shipping',
-    description: 'Door-to-door between states. Tracked at every checkpoint.',
-    comingSoon: false,
-  },
-  {
-    id: 'bulk',
-    icon: <IconBoxes />,
-    name: 'Bulk & Business',
-    description: 'Volume discounts and dedicated account management for e-commerce sellers and businesses.',
-    comingSoon: false,
-  },
-  {
-    id: 'international',
-    icon: <IconGlobe />,
-    name: 'International Shipping',
-    description: 'Cross-border delivery to select destinations. Customs-cleared and insured.',
-    comingSoon: true,
-  },
+const STATS = [
+  { value: '50,000+', label: 'Packages Delivered' },
+  { value: '98.7%', label: 'On-Time Rate' },
+  { value: '30+', label: 'Cities Covered' },
+  { value: '24/7', label: 'Support' },
 ]
 
 const HOW_STEPS = [
   {
     number: '1',
     title: 'Book',
-    description: 'Choose your delivery type, enter pickup and drop-off details, and get an instant price quote.',
+    description:
+      'Choose your delivery type, enter pickup and drop-off details, and get an instant price quote.',
   },
   {
     number: '2',
     title: 'Drop Off or Pick Up',
-    description: 'Drop your package at the nearest Mobtel agent location or schedule a home pickup.',
+    description:
+      'Drop your package at the nearest Mobtel agent location or schedule a home pickup.',
   },
   {
     number: '3',
     title: 'Delivered',
-    description: 'Your recipient gets real-time updates and a delivery notification the moment it arrives.',
+    description:
+      'Your recipient gets real-time updates and a delivery notification the moment it arrives.',
   },
-]
-
-const STATS = [
-  { value: '50,000+', label: 'Packages Delivered' },
-  { value: '98.7%', label: 'On-Time Delivery Rate' },
-  { value: '30+', label: 'Cities Covered' },
-  { value: '24/7', label: 'Customer Support' },
 ]
 
 const TESTIMONIALS = [
@@ -149,21 +60,37 @@ const TESTIMONIALS = [
   },
 ]
 
-const CITIES = [
-  'Lagos',
-  'Abuja',
-  'Port Harcourt',
-  'Kano',
-  'Ibadan',
-  'Enugu',
-  'Kaduna',
-  'Benin City',
-  'Owerri',
-  'Calabar',
-  'Uyo',
-  'Warri',
-  'Jos',
-  'Ilorin',
+const FAQS = [
+  {
+    question: 'How long does same-day delivery take?',
+    answer:
+      'Same-day deliveries are typically completed within 2–6 hours of pickup, depending on distance within the city and current traffic conditions.',
+  },
+  {
+    question: 'How do I track my shipment?',
+    answer:
+      'Once your package is booked, you receive a unique tracking number via SMS and email. Enter it on our Track page for real-time status updates at every checkpoint.',
+  },
+  {
+    question: 'What cities do you currently serve?',
+    answer:
+      'We operate in 30+ cities including Lagos, Abuja, Port Harcourt, Kano, Ibadan, Enugu, Kaduna, Benin City, Owerri, Calabar, and more. Our network expands every week.',
+  },
+  {
+    question: 'Are there weight or size restrictions?',
+    answer:
+      'Same-day deliveries handle packages up to 20 kg. Interstate shipments go up to 50 kg per item. Bulk and business orders have no hard limit — contact us for freight arrangements.',
+  },
+  {
+    question: 'What happens if my package is lost or damaged?',
+    answer:
+      'All shipments are insured. In the event of loss or damage, file a claim within 48 hours of the expected delivery date. We investigate and compensate per our liability policy.',
+  },
+  {
+    question: 'Can I schedule a pickup from my location?',
+    answer:
+      'Yes. When booking, select the "Schedule Pickup" option and choose a time window. A Mobtel rider will come to your location within the specified window.',
+  },
 ]
 
 // ---------------------------------------------------------------------------
@@ -172,9 +99,10 @@ const CITIES = [
 
 export default function Home() {
   const [trackingInput, setTrackingInput] = useState('')
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
   const navigate = useNavigate()
 
-  function handleTrackSubmit(e: React.FormEvent) {
+  function handleTrackSubmit(e: FormEvent) {
     e.preventDefault()
     const trimmed = trackingInput.trim()
     if (!trimmed) return
@@ -182,905 +110,379 @@ export default function Home() {
   }
 
   return (
-    <>
-      <style>{`
-        /* ---- Shared wrapper ---- */
-        .home__inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 var(--space-6);
-        }
-
-        /* ================================================================
-           Section 1 — Hero
-           ================================================================ */
-        .home__hero {
-          background: var(--color-primary);
-          width: 100%;
-        }
-
-        .home__hero-inner {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: var(--space-16) var(--space-6);
-          min-height: 560px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: var(--space-12);
-        }
-
-        .home__hero-text {
-          flex: 1;
-          min-width: 0;
-        }
-
-        .home__hero-headline {
-          font-size: clamp(2.25rem, 5vw, 3.75rem);
-          font-weight: 700;
-          color: #ffffff;
-          letter-spacing: -0.03em;
-          line-height: 1.1;
-        }
-
-        .home__hero-sub {
-          font-size: 1.125rem;
-          color: rgba(255, 255, 255, 0.7);
-          max-width: 480px;
-          line-height: 1.6;
-          margin-top: var(--space-4);
-        }
-
-        .home__hero-ctas {
-          display: flex;
-          flex-direction: row;
-          gap: var(--space-3);
-          margin-top: var(--space-8);
-          flex-wrap: wrap;
-        }
-
-        .home__hero-cta-primary {
-          display: inline-block;
-          background: var(--color-accent);
-          color: #ffffff;
-          font-weight: 600;
-          font-size: 1rem;
-          padding: var(--space-3) var(--space-8);
-          border-radius: var(--radius-md);
-          text-decoration: none;
-          transition: opacity 0.15s ease;
-          white-space: nowrap;
-        }
-
-        .home__hero-cta-primary:hover {
-          opacity: 0.88;
-        }
-
-        .home__hero-cta-secondary {
-          display: inline-block;
-          background: transparent;
-          border: 1.5px solid rgba(255, 255, 255, 0.35);
-          color: #ffffff;
-          font-weight: 600;
-          font-size: 1rem;
-          padding: var(--space-3) var(--space-8);
-          border-radius: var(--radius-md);
-          text-decoration: none;
-          transition: border-color 0.15s ease, background 0.15s ease;
-          white-space: nowrap;
-        }
-
-        .home__hero-cta-secondary:hover {
-          border-color: #ffffff;
-          background: rgba(255, 255, 255, 0.06);
-        }
-
-        .home__hero-image-col {
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .home__hero-image {
-          width: 100%;
-          max-width: 420px;
-          border-radius: var(--radius-lg);
-          opacity: 0.9;
-        }
-
-        /* ================================================================
-           Section 2 — Quick Track Widget
-           ================================================================ */
-        .home__track {
-          background: var(--color-bg-subtle);
-          width: 100%;
-          padding: var(--space-16) 0;
-        }
-
-        .home__track-heading {
-          font-size: 1.125rem;
-          font-weight: 600;
-          color: var(--color-text);
-          margin-bottom: var(--space-4);
-        }
-
-        .home__track-form {
-          display: flex;
-          flex-direction: row;
-          gap: var(--space-3);
-          flex-wrap: wrap;
-        }
-
-        .home__track-input {
-          flex: 1;
-          min-width: 0;
-          padding: var(--space-3) var(--space-4);
-          border: 1.5px solid var(--color-border);
-          border-radius: var(--radius-md);
-          font-family: var(--font-sans);
-          font-size: 1rem;
-          color: var(--color-text);
-          background: #ffffff;
-          outline: none;
-          transition: border-color 0.15s ease;
-        }
-
-        .home__track-input:focus {
-          border-color: var(--color-accent);
-        }
-
-        .home__track-btn {
-          background: var(--color-accent);
-          color: #ffffff;
-          font-weight: 600;
-          font-size: 1rem;
-          padding: var(--space-3) var(--space-8);
-          border-radius: var(--radius-md);
-          border: none;
-          cursor: pointer;
-          font-family: var(--font-sans);
-          transition: opacity 0.15s ease;
-          white-space: nowrap;
-        }
-
-        .home__track-btn:hover {
-          opacity: 0.88;
-        }
-
-        /* ================================================================
-           Section 3 — Services Overview
-           ================================================================ */
-        .home__services {
-          background: var(--color-bg);
-          width: 100%;
-          padding: var(--space-16) 0;
-        }
-
-        .home__section-heading {
-          font-size: clamp(1.5rem, 3vw, 2rem);
-          font-weight: 700;
-          color: var(--color-text);
-          text-align: center;
-          margin-bottom: var(--space-2);
-        }
-
-        .home__section-sub {
-          font-size: 1rem;
-          color: var(--color-text-muted);
-          text-align: center;
-          margin-bottom: var(--space-12);
-        }
-
-        .home__services-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: var(--space-6);
-        }
-
-        .home__service-card {
-          position: relative;
-          background: var(--color-bg-subtle);
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius-lg);
-          padding: var(--space-6);
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-3);
-          transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .home__service-card:hover {
-          border-color: var(--color-accent);
-          box-shadow: 0 4px 16px rgba(195, 32, 38, 0.08);
-        }
-
-        .home__service-icon {
-          width: 48px;
-          height: 48px;
-          border-radius: var(--radius-md);
-          background: rgba(195, 32, 38, 0.08);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .home__service-name {
-          font-size: 1rem;
-          font-weight: 600;
-          color: var(--color-text);
-        }
-
-        .home__service-desc {
-          font-size: 0.875rem;
-          color: var(--color-text-muted);
-          line-height: 1.6;
-        }
-
-        .home__service-badge {
-          position: absolute;
-          top: var(--space-4);
-          right: var(--space-4);
-          background: var(--color-text-muted);
-          color: #ffffff;
-          font-size: 0.6875rem;
-          font-weight: 600;
-          padding: 2px 8px;
-          border-radius: var(--radius-full);
-        }
-
-        /* ================================================================
-           Section 4 — How It Works
-           ================================================================ */
-        .home__how {
-          background: var(--color-primary);
-          width: 100%;
-          padding: var(--space-16) 0;
-        }
-
-        .home__how-heading {
-          font-size: clamp(1.5rem, 3vw, 2rem);
-          font-weight: 700;
-          color: #ffffff;
-          text-align: center;
-          margin-bottom: var(--space-2);
-        }
-
-        .home__how-sub {
-          font-size: 1rem;
-          color: rgba(255, 255, 255, 0.7);
-          text-align: center;
-          margin-bottom: var(--space-12);
-        }
-
-        .home__how-steps {
-          display: flex;
-          flex-direction: row;
-          align-items: flex-start;
-          gap: 0;
-        }
-
-        .home__how-step {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-        }
-
-        .home__how-connector {
-          flex: 1;
-          border-top: 2px dashed rgba(255, 255, 255, 0.15);
-          margin-top: 28px; /* visually center on the step circle */
-          align-self: flex-start;
-        }
-
-        .home__how-number {
-          width: 56px;
-          height: 56px;
-          border-radius: 50%;
-          border: 2px solid var(--color-accent);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1.375rem;
-          font-weight: 700;
-          color: var(--color-accent);
-          margin-bottom: var(--space-4);
-          flex-shrink: 0;
-        }
-
-        .home__how-step-title {
-          font-size: 1.125rem;
-          font-weight: 600;
-          color: #ffffff;
-          text-align: center;
-          margin-bottom: var(--space-2);
-        }
-
-        .home__how-step-desc {
-          font-size: 0.9375rem;
-          color: rgba(255, 255, 255, 0.65);
-          text-align: center;
-          line-height: 1.6;
-          max-width: 220px;
-        }
-
-        /* ================================================================
-           Section 5 — Trust Signals / Why Choose Us
-           ================================================================ */
-        .home__trust {
-          background: var(--color-bg);
-          width: 100%;
-          padding: var(--space-16) 0;
-        }
-
-        .home__trust-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-          gap: var(--space-6);
-          margin-top: var(--space-12);
-        }
-
-        .home__trust-tile {
-          text-align: center;
-          padding: var(--space-8) var(--space-4);
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius-lg);
-        }
-
-        .home__trust-stat {
-          display: block;
-          font-size: clamp(2rem, 4vw, 2.75rem);
-          font-weight: 700;
-          color: var(--color-accent);
-          line-height: 1;
-        }
-
-        .home__trust-label {
-          font-size: 0.9rem;
-          color: var(--color-text-muted);
-          margin-top: var(--space-2);
-          line-height: 1.4;
-        }
-
-        /* ================================================================
-           Section 6 — Pricing Teaser
-           ================================================================ */
-        .home__pricing {
-          background: var(--color-bg-subtle);
-          width: 100%;
-          padding: var(--space-16) 0;
-        }
-
-        .home__pricing-inner {
-          max-width: 600px;
-          margin: 0 auto;
-          text-align: center;
-          padding: 0 var(--space-6);
-        }
-
-        .home__pricing-heading {
-          font-size: clamp(1.75rem, 3vw, 2.5rem);
-          font-weight: 700;
-          color: var(--color-text);
-        }
-
-        .home__pricing-sub {
-          font-size: 1rem;
-          color: var(--color-text-muted);
-          margin-top: var(--space-3);
-          line-height: 1.6;
-        }
-
-        .home__pricing-cta {
-          display: inline-block;
-          background: var(--color-accent);
-          color: #ffffff;
-          font-weight: 600;
-          font-size: 1rem;
-          padding: var(--space-3) var(--space-8);
-          border-radius: var(--radius-md);
-          text-decoration: none;
-          margin-top: var(--space-6);
-          transition: opacity 0.15s ease;
-        }
-
-        .home__pricing-cta:hover {
-          opacity: 0.88;
-        }
-
-        /* ================================================================
-           Section 7 — Testimonials
-           ================================================================ */
-        .home__testimonials {
-          background: var(--color-bg);
-          width: 100%;
-          padding: var(--space-16) 0;
-        }
-
-        .home__testimonials-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-          gap: var(--space-6);
-          margin-top: var(--space-12);
-        }
-
-        .home__testimonial-card {
-          background: var(--color-bg-subtle);
-          border: 1px solid var(--color-border);
-          border-radius: var(--radius-lg);
-          padding: var(--space-6);
-          display: flex;
-          flex-direction: column;
-          gap: var(--space-4);
-        }
-
-        .home__testimonial-stars {
-          color: var(--color-accent);
-          font-size: 1rem;
-          letter-spacing: 2px;
-          line-height: 1;
-        }
-
-        .home__testimonial-quote {
-          font-size: 0.9375rem;
-          color: var(--color-text);
-          line-height: 1.7;
-          font-style: italic;
-          flex: 1;
-        }
-
-        .home__testimonial-author {
-          display: flex;
-          align-items: center;
-          gap: var(--space-3);
-          margin-top: auto;
-        }
-
-        .home__testimonial-avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: var(--color-border);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.9rem;
-          font-weight: 600;
-          color: var(--color-text-muted);
-          flex-shrink: 0;
-        }
-
-        .home__testimonial-name {
-          font-size: 0.9rem;
-          font-weight: 600;
-          color: var(--color-text);
-          line-height: 1.3;
-        }
-
-        .home__testimonial-role {
-          font-size: 0.8125rem;
-          color: var(--color-text-muted);
-          line-height: 1.3;
-        }
-
-        /* ================================================================
-           Section 8 — Coverage Map
-           ================================================================ */
-        .home__coverage {
-          background: var(--color-primary);
-          width: 100%;
-          padding: var(--space-16) 0;
-        }
-
-        .home__coverage-heading {
-          font-size: clamp(1.5rem, 3vw, 2rem);
-          font-weight: 700;
-          color: #ffffff;
-          text-align: center;
-          margin-bottom: var(--space-2);
-        }
-
-        .home__coverage-sub {
-          font-size: 1rem;
-          color: rgba(255, 255, 255, 0.7);
-          text-align: center;
-          margin-bottom: var(--space-8);
-        }
-
-        .home__coverage-map {
-          width: 100%;
-          max-width: 800px;
-          height: 360px;
-          margin: 0 auto;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.12);
-          border-radius: var(--radius-lg);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .home__coverage-map-placeholder {
-          font-size: 0.9375rem;
-          color: rgba(255, 255, 255, 0.35);
-        }
-
-        .home__coverage-cities {
-          display: flex;
-          flex-wrap: wrap;
-          gap: var(--space-3);
-          justify-content: center;
-          margin-top: var(--space-8);
-        }
-
-        .home__coverage-city {
-          padding: var(--space-2) var(--space-4);
-          border: 1px solid rgba(255, 255, 255, 0.15);
-          border-radius: var(--radius-full);
-          font-size: 0.875rem;
-          color: rgba(255, 255, 255, 0.7);
-          white-space: nowrap;
-        }
-
-        /* ================================================================
-           Section 9 — App Download Banner
-           ================================================================ */
-        .home__app {
-          background: var(--color-bg-subtle);
-          width: 100%;
-          padding: var(--space-16) 0;
-        }
-
-        .home__app-inner {
-          max-width: 600px;
-          margin: 0 auto;
-          text-align: center;
-          padding: 0 var(--space-6);
-        }
-
-        .home__app-heading {
-          font-size: clamp(1.5rem, 3vw, 2rem);
-          font-weight: 700;
-          color: var(--color-text);
-        }
-
-        .home__app-sub {
-          font-size: 1rem;
-          color: var(--color-text-muted);
-          margin-top: var(--space-3);
-          line-height: 1.6;
-        }
-
-        .home__app-buttons {
-          display: inline-flex;
-          flex-wrap: wrap;
-          gap: var(--space-4);
-          justify-content: center;
-          margin-top: var(--space-6);
-        }
-
-        .home__app-store-btn {
-          border: 1.5px solid var(--color-border);
-          border-radius: var(--radius-md);
-          padding: var(--space-3) var(--space-6);
-          font-size: 0.9375rem;
-          font-weight: 600;
-          color: var(--color-text);
-          background: #ffffff;
-          font-family: var(--font-sans);
-          cursor: default;
-          opacity: 0.6;
-        }
-
-        .home__app-disclaimer {
-          font-size: 0.8125rem;
-          color: var(--color-text-muted);
-          margin-top: var(--space-4);
-          line-height: 1.5;
-        }
-
-        /* ================================================================
-           Responsive overrides
-           ================================================================ */
-        @media (max-width: 768px) {
-          .home__hero-inner {
-            flex-direction: column;
-            min-height: auto;
-            padding: var(--space-10) var(--space-6);
-            gap: var(--space-8);
-          }
-
-          .home__hero-image-col {
-            display: none;
-          }
-
-          .home__hero-sub {
-            max-width: 100%;
-          }
-
-          .home__track {
-            padding: var(--space-10) 0;
-          }
-
-          .home__services {
-            padding: var(--space-10) 0;
-          }
-
-          .home__how {
-            padding: var(--space-10) 0;
-          }
-
-          .home__how-steps {
-            flex-direction: column;
-            align-items: center;
-            gap: var(--space-8);
-          }
-
-          .home__how-connector {
-            display: none;
-          }
-
-          .home__how-step-desc {
-            max-width: 100%;
-          }
-
-          .home__trust {
-            padding: var(--space-10) 0;
-          }
-
-          .home__pricing {
-            padding: var(--space-10) 0;
-          }
-
-          .home__testimonials {
-            padding: var(--space-10) 0;
-          }
-
-          .home__coverage {
-            padding: var(--space-10) 0;
-          }
-
-          .home__coverage-map {
-            height: 220px;
-          }
-
-          .home__app {
-            padding: var(--space-10) 0;
-          }
-        }
-      `}</style>
-
-      <main>
-        {/* ================================================================
-            Section 1 — Hero
-            ================================================================ */}
-        <section className="home__hero" aria-label="Hero">
-          <div className="home__hero-inner">
-            <div className="home__hero-text">
-              <h1 className="home__hero-headline">
-                Send Packages Faster Than Ever
+    <main>
+      {/* ================================================================
+          Hero
+          ================================================================ */}
+      <section
+        className="bg-black"
+        style={{
+          backgroundImage:
+            'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)',
+          backgroundSize: '28px 28px',
+        }}
+        aria-label="Hero"
+      >
+        <div className="max-w-[1200px] mx-auto px-6 py-20 lg:py-28">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* Left: copy */}
+            <div>
+              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 text-white/70 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
+                <MapPin size={12} className="text-[#c32026]" />
+                Now live in 30+ cities across Nigeria
+              </div>
+
+              <h1 className="text-5xl lg:text-[3.75rem] font-bold text-white leading-[1.05] tracking-tight">
+                Send Packages<br />Faster Than Ever
               </h1>
-              <p className="home__hero-sub">
+
+              <p className="text-lg text-white/65 leading-relaxed mt-5 max-w-[480px]">
                 Same-day and next-day delivery across cities and states. Book in
                 minutes, track in real time.
               </p>
-              <div className="home__hero-ctas">
-                <Link to="/dashboard" className="home__hero-cta-primary">
+
+              <div className="flex flex-wrap gap-3 mt-8">
+                <Link
+                  to="/dashboard"
+                  className="bg-[#c32026] text-white font-semibold text-base px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
+                >
                   Send a Package
                 </Link>
-                <Link to="/track" className="home__hero-cta-secondary">
+                <Link
+                  to="/track"
+                  className="border border-white/30 text-white font-semibold text-base px-8 py-3 rounded-lg hover:border-white hover:bg-white/5 transition-all"
+                >
                   Track a Shipment
                 </Link>
               </div>
+
+              {/* Stats strip */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12 pt-8 border-t border-white/10">
+                {STATS.map((stat) => (
+                  <div key={stat.label}>
+                    <span className="block text-2xl font-bold text-white">{stat.value}</span>
+                    <span className="text-sm text-white/45 mt-0.5 block">{stat.label}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="home__hero-image-col">
+
+            {/* Right: image */}
+            <div className="hidden lg:flex justify-end">
               <img
                 src={heroImg}
                 alt="Mobtel parcel delivery"
-                className="home__hero-image"
+                className="w-full max-w-[460px] rounded-2xl opacity-90"
               />
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ================================================================
-            Section 2 — Quick Track Widget
-            ================================================================ */}
-        <section className="home__track" aria-label="Quick Track Widget">
-          <div className="home__inner">
-            <h2 className="home__track-heading">Track Your Shipment</h2>
-            <form className="home__track-form" onSubmit={handleTrackSubmit} noValidate>
-              <input
-                type="text"
-                className="home__track-input"
-                placeholder="Enter tracking number (e.g. MBT-000123)"
-                value={trackingInput}
-                onChange={(e) => setTrackingInput(e.target.value)}
-                aria-label="Tracking number"
-              />
-              <button type="submit" className="home__track-btn">
-                Track
-              </button>
-            </form>
+      {/* ================================================================
+          Track Widget
+          ================================================================ */}
+      <section
+        className="bg-gray-50 border-b border-gray-200 py-10"
+        aria-label="Track a shipment"
+      >
+        <div className="max-w-[1200px] mx-auto px-6">
+          <p className="text-sm font-semibold text-gray-900 mb-3">Track Your Shipment</p>
+          <form className="flex gap-3 flex-wrap" onSubmit={handleTrackSubmit} noValidate>
+            <input
+              type="text"
+              className="flex-1 min-w-0 px-4 py-3 border border-gray-200 rounded-lg text-base text-gray-900 bg-white outline-none focus:border-[#c32026] transition-colors placeholder:text-gray-400"
+              placeholder="Enter tracking number (e.g. MBT-000123)"
+              value={trackingInput}
+              onChange={(e) => setTrackingInput(e.target.value)}
+              aria-label="Tracking number"
+            />
+            <button
+              type="submit"
+              className="bg-[#c32026] text-white font-semibold text-base px-8 py-3 rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap"
+            >
+              Track
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {/* ================================================================
+          Services — Bento Grid
+          ================================================================ */}
+      <section className="bg-white py-20 lg:py-24" aria-label="Our Delivery Services">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-2">
+            Our Delivery Services
+          </h2>
+          <p className="text-base text-gray-500 text-center mb-12">
+            Fast, flexible options for every shipping need
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* Same-Day — featured dark card, wide */}
+            <article
+              className="col-span-1 md:col-span-2 bg-black border border-[#c32026]/20 rounded-2xl p-8 flex flex-col gap-6 relative overflow-hidden"
+              style={{
+                backgroundImage:
+                  'radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)',
+                backgroundSize: '20px 20px',
+              }}
+            >
+              <div className="relative z-10 flex flex-col gap-4 h-full">
+                <div className="flex items-start justify-between">
+                  <div className="w-12 h-12 rounded-xl bg-[#c32026]/15 flex items-center justify-center">
+                    <Zap size={22} className="text-[#c32026]" />
+                  </div>
+                  <span className="text-[11px] font-semibold text-[#c32026] uppercase tracking-widest bg-[#c32026]/10 px-2.5 py-1 rounded-full">
+                    Most Popular
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Same-Day Delivery</h3>
+                  <p className="text-white/55 text-sm leading-relaxed mt-2">
+                    Delivered within hours. Perfect for urgent documents and gifts within the city.
+                  </p>
+                </div>
+                <div className="mt-auto pt-5 border-t border-white/10">
+                  <span className="text-white/35 text-xs">Typically 2–6 hours · Same city</span>
+                </div>
+              </div>
+            </article>
+
+            {/* Next-Day */}
+            <article className="col-span-1 bg-gray-50 border border-gray-200 rounded-2xl p-6 flex flex-col gap-4">
+              <div className="w-12 h-12 rounded-xl bg-[#c32026]/10 flex items-center justify-center">
+                <Calendar size={22} className="text-[#c32026]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">Next-Day Delivery</h3>
+                <p className="text-gray-500 text-sm leading-relaxed mt-1.5">
+                  Book today, arrive tomorrow. Reliable for non-urgent inter-city packages.
+                </p>
+              </div>
+            </article>
+
+            {/* Interstate */}
+            <article className="col-span-1 bg-gray-50 border border-gray-200 rounded-2xl p-6 flex flex-col gap-4">
+              <div className="w-12 h-12 rounded-xl bg-[#c32026]/10 flex items-center justify-center">
+                <Truck size={22} className="text-[#c32026]" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-gray-900">Interstate Shipping</h3>
+                <p className="text-gray-500 text-sm leading-relaxed mt-1.5">
+                  Door-to-door between states. Tracked at every checkpoint.
+                </p>
+              </div>
+            </article>
+
+            {/* Bulk & Business — dark mid-tier, wide */}
+            <article className="col-span-1 md:col-span-2 bg-zinc-900 border border-zinc-700/60 rounded-2xl p-8 flex flex-col gap-5">
+              <div className="w-12 h-12 rounded-xl bg-[#c32026]/15 flex items-center justify-center">
+                <Package size={22} className="text-[#c32026]" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white">Bulk & Business</h3>
+                <p className="text-zinc-400 text-sm leading-relaxed mt-2">
+                  Volume discounts and dedicated account management for e-commerce sellers and businesses.
+                </p>
+              </div>
+              <div className="mt-auto pt-5 border-t border-zinc-800">
+                <span className="text-zinc-600 text-xs">
+                  Volume discounts · Dedicated account manager
+                </span>
+              </div>
+            </article>
+
+            {/* International — coming soon, slim strip */}
+            <article className="col-span-1 md:col-span-3 bg-gray-50 border border-gray-200 rounded-2xl px-8 py-5 flex items-center gap-5">
+              <div className="w-10 h-10 rounded-xl bg-gray-200 flex items-center justify-center flex-shrink-0">
+                <Globe size={18} className="text-gray-400" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base font-semibold text-gray-400">International Shipping</h3>
+                <p className="text-gray-400 text-sm mt-0.5">
+                  Cross-border delivery to select destinations. Customs-cleared and insured.
+                </p>
+              </div>
+              <span className="flex-shrink-0 bg-gray-200 text-gray-500 text-xs font-semibold px-3 py-1 rounded-full">
+                Coming Soon
+              </span>
+            </article>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ================================================================
-            Section 3 — Services Overview
-            ================================================================ */}
-        <section className="home__services" aria-label="Our Delivery Services">
-          <div className="home__inner">
-            <h2 className="home__section-heading">Our Delivery Services</h2>
-            <p className="home__section-sub">
-              Fast, flexible options for every shipping need
+      {/* ================================================================
+          How It Works
+          ================================================================ */}
+      <section className="bg-black py-20 lg:py-24" aria-label="How It Works">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <h2 className="text-3xl font-bold text-white text-center mb-2">How It Works</h2>
+          <p className="text-base text-white/60 text-center mb-14">
+            Ship a package in three simple steps
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {HOW_STEPS.map((step, i) => (
+              <div key={step.number} className="flex flex-col items-center text-center relative">
+                {i < HOW_STEPS.length - 1 && (
+                  <div className="hidden md:block absolute top-7 left-[calc(50%+28px)] right-[-50%] border-t-2 border-dashed border-white/12" />
+                )}
+                <div className="w-14 h-14 rounded-full border-2 border-[#c32026] flex items-center justify-center text-[#c32026] text-xl font-bold mb-5 relative z-10 bg-black">
+                  {step.number}
+                </div>
+                <h3 className="text-lg font-semibold text-white mb-2">{step.title}</h3>
+                <p className="text-white/60 text-sm leading-relaxed max-w-[220px]">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================
+          Trust Stats
+          ================================================================ */}
+      <section className="bg-white py-20 lg:py-24" aria-label="Why Thousands Trust Mobtel">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
+            Why Thousands Trust Mobtel
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {STATS.map((stat) => (
+              <div
+                key={stat.label}
+                className="text-center border border-gray-200 rounded-2xl py-10 px-6"
+              >
+                <span className="block text-4xl font-bold text-[#c32026] leading-none">
+                  {stat.value}
+                </span>
+                <p className="text-gray-500 text-sm mt-3 leading-snug">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================
+          Testimonials
+          ================================================================ */}
+      <section className="bg-gray-50 py-20 lg:py-24" aria-label="Customer Testimonials">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-2">
+            What Our Customers Say
+          </h2>
+          <p className="text-base text-gray-500 text-center mb-12">
+            Trusted by individuals, SMEs, and growing businesses across Nigeria.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {TESTIMONIALS.map((t) => (
+              <article
+                key={t.name}
+                className="bg-white border border-gray-200 rounded-2xl p-6 flex flex-col gap-4"
+              >
+                <div className="text-[#c32026] tracking-widest text-base" aria-label="5 out of 5 stars">
+                  &#9733;&#9733;&#9733;&#9733;&#9733;
+                </div>
+                <p className="text-gray-700 text-[0.9375rem] leading-[1.7] italic flex-1">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <footer className="flex items-center gap-3 pt-3 border-t border-gray-100">
+                  <div
+                    className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-xs font-semibold text-gray-500 flex-shrink-0"
+                    aria-hidden="true"
+                  >
+                    {t.initials}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-900">{t.name}</p>
+                    <p className="text-xs text-gray-400">{t.role}</p>
+                  </div>
+                </footer>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================================================================
+          FAQ
+          ================================================================ */}
+      <section className="bg-black py-20 lg:py-24" aria-label="Frequently Asked Questions">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-white text-center mb-2">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-base text-white/55 text-center mb-12">
+              Everything you need to know about shipping with Mobtel.
             </p>
-            <div className="home__services-grid">
-              {SERVICES.map((service) => (
-                <article key={service.id} className="home__service-card">
-                  {service.comingSoon && (
-                    <span className="home__service-badge" aria-label="Coming soon">
-                      Coming Soon
+
+            <div className="divide-y divide-white/10">
+              {FAQS.map((faq, i) => (
+                <div key={i}>
+                  <button
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                    className="w-full flex items-center justify-between py-5 text-left gap-4"
+                    aria-expanded={openFaq === i}
+                  >
+                    <span className="text-white font-medium text-[0.9375rem]">
+                      {faq.question}
                     </span>
-                  )}
-                  <div className="home__service-icon" aria-hidden="true">
-                    {service.icon}
-                  </div>
-                  <h3 className="home__service-name">{service.name}</h3>
-                  <p className="home__service-desc">{service.description}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================
-            Section 4 — How It Works
-            ================================================================ */}
-        <section className="home__how" aria-label="How It Works">
-          <div className="home__inner">
-            <h2 className="home__how-heading">How It Works</h2>
-            <p className="home__how-sub">Ship a package in three simple steps</p>
-            <div className="home__how-steps">
-              {HOW_STEPS.map((step, index) => (
-                <React.Fragment key={step.number}>
-                  <div className="home__how-step">
-                    <div className="home__how-number" aria-hidden="true">
-                      {step.number}
-                    </div>
-                    <h3 className="home__how-step-title">{step.title}</h3>
-                    <p className="home__how-step-desc">{step.description}</p>
-                  </div>
-                  {index < HOW_STEPS.length - 1 && (
-                    <div
-                      className="home__how-connector"
-                      aria-hidden="true"
+                    <ChevronDown
+                      size={18}
+                      className={cn(
+                        'text-white/40 flex-shrink-0 transition-transform duration-200',
+                        openFaq === i && 'rotate-180',
+                      )}
                     />
+                  </button>
+                  {openFaq === i && (
+                    <p className="text-white/60 text-sm leading-relaxed pb-5">
+                      {faq.answer}
+                    </p>
                   )}
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================
-            Section 5 — Why Choose Us / Trust Signals
-            ================================================================ */}
-        <section className="home__trust" aria-label="Why Thousands Trust Mobtel">
-          <div className="home__inner">
-            <h2 className="home__section-heading">Why Thousands Trust Mobtel</h2>
-            <div className="home__trust-grid">
-              {STATS.map((stat) => (
-                <div key={stat.label} className="home__trust-tile">
-                  <span className="home__trust-stat">{stat.value}</span>
-                  <p className="home__trust-label">{stat.label}</p>
                 </div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ================================================================
-            Section 6 — Pricing Teaser
-            ================================================================ */}
-        <section className="home__pricing" aria-label="Pricing Teaser">
-          <div className="home__pricing-inner">
-            <h2 className="home__pricing-heading">Delivery From &#8358;1,500</h2>
-            <p className="home__pricing-sub">
-              Transparent pricing with no hidden fees. Get an instant quote before
-              you book.
-            </p>
-            <Link to="/dashboard" className="home__pricing-cta">
-              Get a Price Quote
-            </Link>
+      {/* ================================================================
+          App Download Banner
+          ================================================================ */}
+      <section className="bg-gray-50 py-20 lg:py-24" aria-label="Mobile App Download">
+        <div className="max-w-[600px] mx-auto px-6 text-center">
+          <h2 className="text-3xl font-bold text-gray-900">Manage Deliveries On the Go</h2>
+          <p className="text-gray-500 text-base leading-relaxed mt-3">
+            The Mobtel app gives you one-tap booking, live tracking, and instant
+            notifications — right from your pocket.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4 mt-6">
+            <button
+              type="button"
+              disabled
+              className="border border-gray-200 rounded-lg px-6 py-3 text-[0.9375rem] font-semibold text-gray-900 bg-white opacity-50 cursor-not-allowed"
+            >
+              Download on the App Store
+            </button>
+            <button
+              type="button"
+              disabled
+              className="border border-gray-200 rounded-lg px-6 py-3 text-[0.9375rem] font-semibold text-gray-900 bg-white opacity-50 cursor-not-allowed"
+            >
+              Get it on Google Play
+            </button>
           </div>
-        </section>
-
-        {/* ================================================================
-            Section 7 — Testimonials
-            ================================================================ */}
-        <section className="home__testimonials" aria-label="Customer Testimonials">
-          <div className="home__inner">
-            <h2 className="home__section-heading">What Our Customers Say</h2>
-            <p className="home__section-sub">
-              Trusted by individuals, SMEs, and growing businesses across Nigeria.
-            </p>
-            <div className="home__testimonials-grid">
-              {TESTIMONIALS.map((t) => (
-                <article key={t.name} className="home__testimonial-card">
-                  <div className="home__testimonial-stars" aria-label="5 out of 5 stars">
-                    &#9733;&#9733;&#9733;&#9733;&#9733;
-                  </div>
-                  <p className="home__testimonial-quote">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
-                  <footer className="home__testimonial-author">
-                    <div className="home__testimonial-avatar" aria-hidden="true">
-                      {t.initials}
-                    </div>
-                    <div>
-                      <p className="home__testimonial-name">{t.name}</p>
-                      <p className="home__testimonial-role">{t.role}</p>
-                    </div>
-                  </footer>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================
-            Section 8 — Coverage Map Placeholder
-            ================================================================ */}
-        <section className="home__coverage" aria-label="Coverage Map">
-          <div className="home__inner">
-            <h2 className="home__coverage-heading">We Deliver Across Nigeria</h2>
-            <p className="home__coverage-sub">
-              From Lagos to Kano, Abuja to Port Harcourt — our network is growing
-              every week.
-            </p>
-            <div className="home__coverage-map" role="img" aria-label="Coverage map placeholder">
-              <p className="home__coverage-map-placeholder">
-                Interactive coverage map coming soon
-              </p>
-            </div>
-            <div className="home__coverage-cities" aria-label="Cities we serve">
-              {CITIES.map((city) => (
-                <span key={city} className="home__coverage-city">
-                  {city}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ================================================================
-            Section 9 — App Download Banner
-            ================================================================ */}
-        <section className="home__app" aria-label="Mobile App Download">
-          <div className="home__app-inner">
-            <h2 className="home__app-heading">Manage Deliveries On the Go</h2>
-            <p className="home__app-sub">
-              The Mobtel app gives you one-tap booking, live tracking, and instant
-              notifications — right from your pocket.
-            </p>
-            <div className="home__app-buttons">
-              <button type="button" className="home__app-store-btn" disabled>
-                Download on the App Store
-              </button>
-              <button type="button" className="home__app-store-btn" disabled>
-                Get it on Google Play
-              </button>
-            </div>
-            <p className="home__app-disclaimer">
-              Mobile apps coming soon. Manage your shipments from the web dashboard
-              in the meantime.
-            </p>
-          </div>
-        </section>
-      </main>
-    </>
+          <p className="text-gray-400 text-xs mt-4 leading-relaxed">
+            Mobile apps coming soon. Manage your shipments from the web dashboard in the meantime.
+          </p>
+        </div>
+      </section>
+    </main>
   )
 }
