@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Zap, Calendar, Truck, Package, Globe, ChevronDown, MapPin } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import heroImg from '../assets/hero.png'
+import { HeroIllustration } from '@/components/HeroIllustration'
 
 // ---------------------------------------------------------------------------
 // Data
@@ -167,13 +167,9 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Right: image */}
+            {/* Right: illustration */}
             <div className="hidden lg:flex justify-end">
-              <img
-                src={heroImg}
-                alt="Mobtel parcel delivery"
-                className="w-full max-w-[460px] rounded-2xl opacity-90"
-              />
+              <HeroIllustration />
             </div>
           </div>
         </div>

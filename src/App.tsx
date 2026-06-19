@@ -7,6 +7,8 @@ import Track from './pages/Track'
 import Contact from './pages/Contact'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import TermsAndConditions from './pages/TermsAndConditions'
+import Login from './pages/Login'
+import Send from './pages/Send'
 import DashboardLayout from './pages/dashboard/DashboardLayout'
 import Overview from './pages/dashboard/Overview'
 
@@ -76,6 +78,23 @@ export default function App() {
           element={
             <PublicLayout>
               <TermsAndConditions />
+            </PublicLayout>
+          }
+        />
+
+        <Route
+          path="/login"
+          element={
+            <PublicLayout>
+              <Login />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/send"
+          element={
+            <PublicLayout>
+              <Send />
             </PublicLayout>
           }
         />
