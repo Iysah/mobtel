@@ -1,8 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Zap, Calendar, Truck, Package, Globe, ChevronDown, MapPin } from 'lucide-react'
+import { Zap, Calendar, Truck, Package, Globe, ChevronDown, MapPin, Clock, Wallet } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { HeroIllustration } from '@/components/HeroIllustration'
 
 // ---------------------------------------------------------------------------
 // Data
@@ -114,65 +113,72 @@ export default function Home() {
       {/* ================================================================
           Hero
           ================================================================ */}
-      <section
-        className="bg-black"
-        style={{
-          backgroundImage:
-            'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)',
-          backgroundSize: '28px 28px',
-        }}
-        aria-label="Hero"
-      >
-        <div className="max-w-[1200px] mx-auto px-6 py-20 lg:py-28">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Left: copy */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 text-white/70 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
-                <MapPin size={12} className="text-[#c32026]" />
-                Now live in 30+ cities across Nigeria
-              </div>
+      <section className="relative min-h-160 lg:min-h-180 flex items-center" aria-label="Hero">
+        {/* Background photo */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `url('https://images.pexels.com/videos/15978611/pexels-photo-15978611.jpeg?auto=compress&cs=tinysrgb&w=1920')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        {/* Gradient overlay — heavy on the left for text, lighter right to reveal trucks */}
+        <div className="absolute inset-0 bg-linear-to-r from-black/92 via-black/72 to-black/40" />
 
-              <h1 className="text-5xl lg:text-[3.75rem] font-bold text-white leading-[1.05] tracking-tight">
-                Send Packages<br />Faster Than Ever
-              </h1>
-
-              <p className="text-lg text-white/65 leading-relaxed mt-5 max-w-[480px]">
-                Same-day and next-day delivery across cities and states. Book in
-                minutes, track in real time.
-              </p>
-
-              <div className="flex flex-wrap gap-3 mt-8">
-                <Link
-                  to="/dashboard"
-                  className="bg-[#c32026] text-white font-semibold text-base px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
-                >
-                  Send a Package
-                </Link>
-                <Link
-                  to="/track"
-                  className="border border-white/30 text-white font-semibold text-base px-8 py-3 rounded-lg hover:border-white hover:bg-white/5 transition-all"
-                >
-                  Track a Shipment
-                </Link>
-              </div>
-
-              {/* Stats strip */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12 pt-8 border-t border-white/10">
-                {STATS.map((stat) => (
-                  <div key={stat.label}>
-                    <span className="block text-2xl font-bold text-white">{stat.value}</span>
-                    <span className="text-sm text-white/45 mt-0.5 block">{stat.label}</span>
-                  </div>
-                ))}
-              </div>
+        {/* Content */}
+        <div className="relative z-10 w-full max-w-300 mx-auto px-6 py-24 lg:py-32">
+          <div className="max-w-155">
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/15 text-white/70 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
+              <MapPin size={12} className="text-[#c32026]" />
+              Now live in 30+ cities across Nigeria
             </div>
 
-            {/* Right: illustration */}
-            <div className="hidden lg:flex justify-end">
-              <HeroIllustration />
+            <h1 className="text-5xl lg:text-6xl font-bold text-white leading-[1.05] tracking-tight">
+              Send Packages<br />Faster Than Ever
+            </h1>
+
+            <p className="text-lg text-white/65 leading-relaxed mt-5 max-w-120">
+              Same-day and next-day delivery across cities and states. Book in
+              minutes, track in real time.
+            </p>
+
+            <div className="flex flex-wrap gap-3 mt-8">
+              <Link
+                to="/dashboard"
+                className="bg-[#c32026] text-white font-semibold text-base px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
+              >
+                Send a Package
+              </Link>
+              <Link
+                to="/track"
+                className="border border-white/30 text-white font-semibold text-base px-8 py-3 rounded-lg hover:border-white hover:bg-white/5 transition-all"
+              >
+                Track a Shipment
+              </Link>
+            </div>
+
+            {/* Stats strip */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12 pt-8 border-t border-white/10">
+              {STATS.map((stat) => (
+                <div key={stat.label}>
+                  <span className="block text-2xl font-bold text-white">{stat.value}</span>
+                  <span className="text-sm text-white/45 mt-0.5 block">{stat.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
+
+        {/* Attribution */}
+        <a
+          href="https://www.pexels.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute bottom-3 right-4 text-[10px] text-white/25 hover:text-white/50 transition-colors"
+        >
+          Photo: Pexels
+        </a>
       </section>
 
       {/* ================================================================
@@ -182,7 +188,7 @@ export default function Home() {
         className="bg-gray-50 border-b border-gray-200 py-10"
         aria-label="Track a shipment"
       >
-        <div className="max-w-[1200px] mx-auto px-6">
+        <div className="max-w-300 mx-auto px-6">
           <p className="text-sm font-semibold text-gray-900 mb-3">Track Your Shipment</p>
           <form className="flex gap-3 flex-wrap" onSubmit={handleTrackSubmit} noValidate>
             <input
@@ -207,7 +213,7 @@ export default function Home() {
           Services — Bento Grid
           ================================================================ */}
       <section className="bg-white py-20 lg:py-24" aria-label="Our Delivery Services">
-        <div className="max-w-[1200px] mx-auto px-6">
+        <div className="max-w-300 mx-auto px-6">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-2">
             Our Delivery Services
           </h2>
@@ -292,7 +298,7 @@ export default function Home() {
 
             {/* International — coming soon, slim strip */}
             <article className="col-span-1 md:col-span-3 bg-gray-50 border border-gray-200 rounded-2xl px-8 py-5 flex items-center gap-5">
-              <div className="w-10 h-10 rounded-xl bg-gray-200 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-gray-200 flex items-center justify-center shrink-0">
                 <Globe size={18} className="text-gray-400" />
               </div>
               <div className="flex-1 min-w-0">
@@ -301,7 +307,7 @@ export default function Home() {
                   Cross-border delivery to select destinations. Customs-cleared and insured.
                 </p>
               </div>
-              <span className="flex-shrink-0 bg-gray-200 text-gray-500 text-xs font-semibold px-3 py-1 rounded-full">
+              <span className="shrink-0 bg-gray-200 text-gray-500 text-xs font-semibold px-3 py-1 rounded-full">
                 Coming Soon
               </span>
             </article>
@@ -313,7 +319,7 @@ export default function Home() {
           How It Works
           ================================================================ */}
       <section className="bg-black py-20 lg:py-24" aria-label="How It Works">
-        <div className="max-w-[1200px] mx-auto px-6">
+        <div className="max-w-300 mx-auto px-6">
           <h2 className="text-3xl font-bold text-white text-center mb-2">How It Works</h2>
           <p className="text-base text-white/60 text-center mb-14">
             Ship a package in three simple steps
@@ -329,7 +335,7 @@ export default function Home() {
                   {step.number}
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-2">{step.title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed max-w-[220px]">
+                <p className="text-white/60 text-sm leading-relaxed max-w-55">
                   {step.description}
                 </p>
               </div>
@@ -342,7 +348,7 @@ export default function Home() {
           Trust Stats
           ================================================================ */}
       <section className="bg-white py-20 lg:py-24" aria-label="Why Thousands Trust Mobtel">
-        <div className="max-w-[1200px] mx-auto px-6">
+        <div className="max-w-300 mx-auto px-6">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">
             Why Thousands Trust Mobtel
           </h2>
@@ -366,7 +372,7 @@ export default function Home() {
           Testimonials
           ================================================================ */}
       <section className="bg-gray-50 py-20 lg:py-24" aria-label="Customer Testimonials">
-        <div className="max-w-[1200px] mx-auto px-6">
+        <div className="max-w-300 mx-auto px-6">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-2">
             What Our Customers Say
           </h2>
@@ -388,7 +394,7 @@ export default function Home() {
                 </p>
                 <footer className="flex items-center gap-3 pt-3 border-t border-gray-100">
                   <div
-                    className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-xs font-semibold text-gray-500 flex-shrink-0"
+                    className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-xs font-semibold text-gray-500 shrink-0"
                     aria-hidden="true"
                   >
                     {t.initials}
@@ -408,7 +414,7 @@ export default function Home() {
           FAQ
           ================================================================ */}
       <section className="bg-black py-20 lg:py-24" aria-label="Frequently Asked Questions">
-        <div className="max-w-[1200px] mx-auto px-6">
+        <div className="max-w-300 mx-auto px-6">
           <div className="max-w-2xl mx-auto">
             <h2 className="text-3xl font-bold text-white text-center mb-2">
               Frequently Asked Questions
@@ -431,7 +437,7 @@ export default function Home() {
                     <ChevronDown
                       size={18}
                       className={cn(
-                        'text-white/40 flex-shrink-0 transition-transform duration-200',
+                        'text-white/40 shrink-0 transition-transform duration-200',
                         openFaq === i && 'rotate-180',
                       )}
                     />
@@ -449,34 +455,77 @@ export default function Home() {
       </section>
 
       {/* ================================================================
-          App Download Banner
+          Rider Recruitment
           ================================================================ */}
-      <section className="bg-gray-50 py-20 lg:py-24" aria-label="Mobile App Download">
-        <div className="max-w-[600px] mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold text-gray-900">Manage Deliveries On the Go</h2>
-          <p className="text-gray-500 text-base leading-relaxed mt-3">
-            The Mobtel app gives you one-tap booking, live tracking, and instant
-            notifications — right from your pocket.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4 mt-6">
-            <button
-              type="button"
-              disabled
-              className="border border-gray-200 rounded-lg px-6 py-3 text-[0.9375rem] font-semibold text-gray-900 bg-white opacity-50 cursor-not-allowed"
-            >
-              Download on the App Store
-            </button>
-            <button
-              type="button"
-              disabled
-              className="border border-gray-200 rounded-lg px-6 py-3 text-[0.9375rem] font-semibold text-gray-900 bg-white opacity-50 cursor-not-allowed"
-            >
-              Get it on Google Play
-            </button>
+      <section className="bg-gray-50 py-20 lg:py-24" aria-label="Become a Mobtel Rider">
+        <div className="max-w-300 mx-auto px-6">
+          <div
+            className="bg-black rounded-3xl p-10 lg:p-14 relative overflow-hidden"
+            style={{
+              backgroundImage:
+                'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)',
+              backgroundSize: '28px 28px',
+            }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 items-center">
+              {/* Left: copy */}
+              <div>
+                <div className="inline-flex items-center gap-2 bg-[#c32026]/15 border border-[#c32026]/25 text-[#c32026] text-xs font-semibold px-3 py-1.5 rounded-full mb-6">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#c32026]" />
+                  Now hiring riders
+                </div>
+
+                <h2 className="text-3xl lg:text-4xl font-bold text-white leading-tight mb-4">
+                  Turn Every Trip<br />Into Income
+                </h2>
+
+                <p className="text-white/60 text-base leading-relaxed max-w-md mb-8">
+                  Join our growing network of riders delivering across Nigeria. Set your own
+                  schedule, earn per delivery, and get paid every week.
+                </p>
+
+                <Link
+                  to="/contact"
+                  className="inline-block bg-[#c32026] text-white font-semibold text-base px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
+                >
+                  Apply to Ride
+                </Link>
+              </div>
+
+              {/* Right: benefit tiles */}
+              <div className="flex flex-col gap-3 lg:min-w-72">
+                <div className="flex items-center gap-4 bg-white/6 border border-white/8 rounded-xl px-5 py-4">
+                  <div className="w-10 h-10 rounded-lg bg-[#c32026]/15 flex items-center justify-center shrink-0">
+                    <Clock size={18} className="text-[#c32026]" />
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Flexible Hours</p>
+                    <p className="text-white/45 text-xs mt-0.5">Work whenever it suits you</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 bg-white/6 border border-white/8 rounded-xl px-5 py-4">
+                  <div className="w-10 h-10 rounded-lg bg-[#c32026]/15 flex items-center justify-center shrink-0">
+                    <Wallet size={18} className="text-[#c32026]" />
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Weekly Payouts</p>
+                    <p className="text-white/45 text-xs mt-0.5">Earnings sent every Friday</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 bg-white/6 border border-white/8 rounded-xl px-5 py-4">
+                  <div className="w-10 h-10 rounded-lg bg-[#c32026]/15 flex items-center justify-center shrink-0">
+                    <Zap size={18} className="text-[#c32026]" />
+                  </div>
+                  <div>
+                    <p className="text-white font-semibold text-sm">Start in Days</p>
+                    <p className="text-white/45 text-xs mt-0.5">Apply today, onboard fast</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="text-gray-400 text-xs mt-4 leading-relaxed">
-            Mobile apps coming soon. Manage your shipments from the web dashboard in the meantime.
-          </p>
         </div>
       </section>
     </main>

@@ -4,7 +4,7 @@ import { BRAND } from '../../lib/constants'
 const COMPANY_LINKS = [
   { label: 'About Us', to: '/about' },
   { label: 'Careers', to: '/careers' },
-  { label: 'Press', to: '/press' },
+  { label: 'Locations', to: '/locations' },
   { label: 'Blog', to: '/blog' },
 ]
 
@@ -12,11 +12,10 @@ const SERVICES_LINKS = [
   { label: 'Send a Package', to: '/send' },
   { label: 'Track Shipment', to: '/track' },
   { label: 'Pricing', to: '/pricing' },
-  { label: 'API Docs', to: '/api' },
 ]
 
 const SUPPORT_LINKS = [
-  { label: 'Help Center', to: '/help' },
+  { label: 'Prohibited Items', to: '/prohibited-items' },
   { label: 'Contact Us', to: '/contact' },
   { label: 'Privacy Policy', to: '/privacy' },
   { label: 'Terms & Conditions', to: '/terms' },
@@ -280,7 +279,7 @@ export default function Footer() {
         <div className="footer__bottom">
           <div className="footer__bottom-inner">
             <p className="footer__copyright">
-              &copy; 2025 Mobtel Logistics. All rights reserved.
+              &copy; {new Date().getFullYear()} Mobtel Logistics. All rights reserved.
             </p>
             <div className="footer__bottom-links">
               <Link to="/privacy" className="footer__bottom-link">
